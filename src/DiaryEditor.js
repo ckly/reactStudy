@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+
 const DiaryEditor = () => {
+  const authorInput = useRef();
+const contentInput = useRef();
   const [status,setStatus] = useState({
     author : "",
     content : "",
-    emotion : "",
+    emotion : "1",
   });  
 
   const handleChgStatus = (e)=>{
@@ -13,7 +16,17 @@ const DiaryEditor = () => {
     });
   };
 const handleSubmit = ()=>{
-  console.log(status);
+  if(status.author.length<2){
+    alert("작성자는 두자 이상으로 입력하세요.");
+    authorInput.current.focus();  
+    return ;
+  }
+
+  if(status.content.length<2){
+    alert("내용은 5자 이상 입력해야 합니다.");
+    contentInput.current.focus();  
+    return ;
+  }
   alert("save Success!")
 };
 
@@ -22,14 +35,18 @@ const handleSubmit = ()=>{
       <h2>Todays Diary</h2>
       <div>
         <input name="author"
+        ref = {authorInput}
           value={status.author}
           onChange={handleChgStatus}
+          placeholder="작성자"
         />
       </div>
       <div>
         <textarea name="content"
+        ref = {contentInput}
           value={status.content}
           onChange={handleChgStatus}
+          placeholder="내용"
         />
       </div>
       <div>
