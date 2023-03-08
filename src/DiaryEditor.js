@@ -3,6 +3,7 @@ const DiaryEditor = () => {
   const [status,setStatus] = useState({
     author : "",
     content : "",
+    emotion : "",
   });  
 
   const handleChgStatus = (e)=>{
@@ -11,6 +12,11 @@ const DiaryEditor = () => {
         [e.target.name] : e.target.value,
     });
   };
+const handleSubmit = ()=>{
+  console.log(status);
+  alert("save Success!")
+};
+
   return (
     <div className="DiaryEditor">
       <h2>Todays Diary</h2>
@@ -25,6 +31,18 @@ const DiaryEditor = () => {
           value={status.content}
           onChange={handleChgStatus}
         />
+      </div>
+      <div>
+        <select name="emotion" value={status.emotion} onChange={handleChgStatus}>
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          <option value={4}>4</option>
+          <option value={5}>5</option>
+        </select>
+      </div>
+      <div>
+        <button onClick={handleSubmit}>SAVE</button>
       </div>
     </div>
   );
