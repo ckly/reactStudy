@@ -17,7 +17,7 @@ const getData = async() => {
       content : it.body,
       emotion : Math.floor(Math.random()*5)+1, 
       created : new Date(),
-      id : it.id
+      id : dataId.current++
     }
   });
   setData(initData);
