@@ -2,6 +2,7 @@ import { useMemo,useEffect, useRef, useState } from "react";
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
+import OptimizeTest from "./OptimizeTest";
 
 
 //https://jsonplaceholder.typicode.com/comments
@@ -53,7 +54,7 @@ const onEdit = (targetId,newContent)=>{
 };
 
 const getDiaryAnalysis = useMemo(() =>{
-  console.log("Start Analysis!!!!!");
+ // console.log("Start Analysis!!!!!");
   const goodCount = data.filter((it)=>it.emotion>=3).length;
   const badCount = data.length- goodCount;
   const goodRatio = ( goodCount / data.length ) * 100;
@@ -61,8 +62,10 @@ const getDiaryAnalysis = useMemo(() =>{
 },[data.length]);
 
 const {goodCount, badCount, goodRatio} = getDiaryAnalysis;
+
   return (
     <div className="App">
+          <OptimizeTest/>
           <DiaryEditor onCreate={onCreate} />
           <div>All : {data.length}</div>
           <div>Good : {goodCount}</div>
