@@ -1,9 +1,7 @@
-import { useMemo,useEffect, useRef, useState } from "react";
+import { useMemo, useEffect, useRef, useState, useCallback } from "react";
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
-import OptimizeTest from "./OptimizeTest";
-
 
 //https://jsonplaceholder.typicode.com/comments
 
@@ -29,7 +27,7 @@ const getData = async() => {
 useEffect(()=>{
   getData();
 },[]);
-const onCreate = (author,content,emotion)=>{
+const onCreate = useCallback((author,content,emotion)=>{
   const created = new Date().getTime();
   const newItem = {
     author,
@@ -39,19 +37,18 @@ const onCreate = (author,content,emotion)=>{
     id : dataId.current
   }
   dataId.current +=1;
-  setData([newItem,...data]);
-};
-const onRemove = (targetId) =>{
-  console.log(`${targetId}가 삭제됨.`);
-  const newDiaryList = data.filter((it)=>it.id !==targetId);
-  //console.log(newDiaryList);
-  setData(newDiaryList);
-}
-const onEdit = (targetId,newContent)=>{
-  setData(
+  setData((data)=>[newItem,...data]);
+},
+[]);
+const onRemove = useCallback((targetId) =>{
+  console.log(`${targetId}가 삭제됨.`);  
+  setData((data)=>data.filter((it)=>it.id !==targetId));
+},[]);
+const onEdit = useCallback((targetId,newContent)=>{
+  setData((data)=>
     data.map((it)=> it.id === targetId ? {...it, content: newContent} : it )
   );
-};
+},[]);
 
 const getDiaryAnalysis = useMemo(() =>{
  // console.log("Start Analysis!!!!!");
@@ -65,7 +62,6 @@ const {goodCount, badCount, goodRatio} = getDiaryAnalysis;
 
   return (
     <div className="App">
-          <OptimizeTest/>
           <DiaryEditor onCreate={onCreate} />
           <div>All : {data.length}</div>
           <div>Good : {goodCount}</div>
